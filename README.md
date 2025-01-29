@@ -2,8 +2,7 @@
 
 A Next.js web application that allows users to easily download Instagram videos and reels. Built with modern web technologies and a clean, responsive UI.
 
-![Instagram Downloader Demo](docs/images/Screenshot 2025-01-29 at 2.56.16 AM.png)
-![Instagram Downloader Demo](docs/images/Screenshot 2025-01-29 at 8.06.25 PM.png)
+![Instagram Downloader Interface](https://github.com/Tapasvi48/InstagramReels-Downloader/blob/main/docs/images/Screenshot%202025-01-29%20at%208.06.25%E2%80%AFPM.png)
 
 ## Features
 

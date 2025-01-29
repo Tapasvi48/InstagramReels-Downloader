@@ -1,101 +1,167 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import axios from "axios";
+import {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardContent,
+} from "@/components/ui/card";
+
+import "./globals.css";
+import VideoCard from "@/components/ui/videoPlayer";
+import { TextGenerateEffect } from "@/components/ui/textGenerate";
+import { PlaceholdersAndVanishInput } from "@/components/ui/placeholder";
+
+interface Video {
+  video_url: string;
+  caption?: string;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [username, setUsername] = useState<string>("");
+  const placeholders = ["Enter Instagram Username"];
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  const fetchVideos = async () => {
+    setLoading(true);
+    setError(null);
+    setVideos([]);
+
+    try {
+      const response = await axios.post("/api/videos", { username });
+      if (response.data?.videos) {
+        setVideos(response.data.videos.slice(0, 10));
+      } else {
+        setError("No videos found.");
+      }
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.error || "An error occurred.");
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDownload = (videoUrl: string) => {
+    const link = document.createElement("a");
+    link.href = videoUrl;
+    link.download = "video.mp4";
+    link.click();
+  };
+
+  const handleSearch = async () => {
+    if (!username) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Simply redirect with username
+      window.location.href = `/videos?username=${encodeURIComponent(username)}`;
+    } catch (err) {
+      setError("An unexpected error occurred.");
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col bg-gradient-to-tr from-[#FF9F00] via-[#FF1C5E] to-[#5233EA] relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,28,94,0.3),rgba(255,255,255,0.1))]" />
+
+      <div className="w-full max-w-7xl px-4 py-8 mx-auto relative z-10">
+        <div className="w-full font-bold flex items-center justify-center mb-12">
+          <TextGenerateEffect
+            duration={2}
+            filter={false}
+            words={"Top 10 Instagram Videos"}
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="w-full max-w-xl mx-auto">
+          <Card className="shadow-md border border-white/20 bg-gradient-to-br from-white/20 via-pink-100/20 to-orange-100/20 backdrop-blur-md">
+            <CardContent className="p-6">
+              <div className="flex flex-col items-center gap-6">
+                <h2 className="text-2xl sm:text-3xl text-center text-black">
+                  Download Your Favourite Reels
+                </h2>
+                <div className="w-full">
+                  <PlaceholdersAndVanishInput
+                    placeholders={placeholders}
+                    onChange={handleChange}
+                    onSubmit={onSubmit}
+                  />
+                </div>
+                <button
+                  onClick={handleSearch}
+                  disabled={loading}
+                  className="px-4 py-2 text-black backdrop-blur-sm border border-black/20 rounded-md hover:shadow-[0px_0px_4px_4px_rgba(255,255,255,0.1)] bg-white/10 text-sm transition duration-200"
+                >
+                  {loading ? (
+                    <div className="animate-spin h-4 w-4 border-2 border-t-transparent border-white rounded-full"></div>
+                  ) : (
+                    "Search Videos"
+                  )}
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {error && (
+          <div className="w-full max-w-xl mt-6 mx-auto">
+            <Card className="border-red-500/20 bg-red-500/10 backdrop-blur-lg">
+              <CardContent className="p-4">
+                <p className="text-red-200 text-center">{error}</p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        <div className="w-full grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-8">
+          {videos.map((video, index) => (
+            <Card
+              key={index}
+              className="shadow-md hover:shadow-lg transition-shadow bg-gradient-to-br from-white/20 via-pink-100/20 to-orange-100/20 backdrop-blur-md border border-white/20"
+            >
+              <CardHeader>
+                <h2 className="text-lg font-medium text-white">
+                  Video {index + 1}
+                </h2>
+              </CardHeader>
+              <CardContent>
+                <VideoCard video={video} />
+                {video.caption && (
+                  <p className="mt-2 text-sm text-gray-300 line-clamp-2">
+                    {video.caption}
+                  </p>
+                )}
+              </CardContent>
+              <CardFooter>
+                <button
+                  onClick={() => handleDownload(video.video_url)}
+                  className="w-full px-4 py-2 text-white backdrop-blur-sm border border-white/20 rounded-md hover:shadow-[0px_0px_4px_4px_rgba(255,255,255,0.1)] bg-white/10 text-sm transition duration-200"
+                >
+                  Download
+                </button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

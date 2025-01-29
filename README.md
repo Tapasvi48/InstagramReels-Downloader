@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Instagram Reel Downloader
+
+A Next.js web application that allows users to easily download Instagram videos and reels. Built with modern web technologies and a clean, responsive UI.
+
+![Instagram Downloader Demo](docs/images/Screenshot 2025-01-29 at 2.56.16 AM.png)
+![Instagram Downloader Demo](docs/images/Screenshot 2025-01-29 at 8.06.25 PM.png)
+
+## Features
+
+- 🎯 Simple and intuitive interface
+- 📱 Fully responsive design
+- 🎨 Beautiful gradient UI
+- ⚡ Fast video processing
+- 💾 Direct download functionality
+- 🔍 Preview video thumbnails
+- 📊 Video metadata display
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) - React framework for production
+- [Tailwind CSS](https://tailwindcss.com/) - For styling
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18.x or later
+- npm or yarn
+- Instagram Basic Display API credentials
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/Tapasvi48/instagram-downloader.git
+cd instagram-downloader
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Create a `.env.local` file in the root directory and add your environment variables:
+```env
+
+```
+
+4. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Enter an Instagram username in the search field
+2. Click "Fetch Videos" to load the user's videos
+3. Browse through the available videos
+4. Click the "Download" button under any video to save it
 
-## Learn More
+## API Routes
 
-To learn more about Next.js, take a look at the following resources:
+The application provides the following API endpoints:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `POST /api/videos` - Fetch videos for a specific username
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Disclaimer
+
+This tool is for educational purposes only. Please respect Instagram's terms of service and content creators' rights when using this application.
+
+## Acknowledgments
+
+- Thanks to all contributors who have helped with the project
+- Instagram for providing the API
+- The Next.js team for the amazing framework
+
+## Author
+
+Your Name - [Your GitHub Profile](https://github.com/Tapasvi48)
+
+Project Link: [https://github.com/Tapasvi48/instagram-downloader](https://github.com/Tapasvi48/InstagramReels-Downloader)
